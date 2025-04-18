@@ -27,6 +27,7 @@
 #include "can_sub.h"
 #include "gyro.h"
 #include "pressure.h"
+#include "flowMeter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
