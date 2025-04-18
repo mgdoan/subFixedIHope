@@ -26,7 +26,7 @@
 
 #include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_i2c.h"
-I2C_HandleTypeDef hi2c3;
+extern I2C_HandleTypeDef hi2c1;
 
 
 #define PRESSURE_ADDR (0x76 << 1)
@@ -121,7 +121,7 @@ void diagnose_pressure(HAL_StatusTypeDef ret) {
 	}
 	if (ret == HAL_ERROR) {
 		printf("\r\n");
-		 uint32_t errorCode = HAL_I2C_GetError(&hi2c3);
+		 uint32_t errorCode = HAL_I2C_GetError(&hi2c1);
 
 		 if (errorCode == HAL_I2C_ERROR_NONE) {
 			 printf("No Error\r\n");
@@ -164,7 +164,7 @@ void pressure_temp_Init(void) {
 	//reset (needed to reconfigure on boot) ---------------------
 	HAL_Delay(200);
 	buf[0] = 0x1E;//reset command
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	diagnose_pressure(ret);
 	i2c_check(ret, "reset command");
 	HAL_Delay(200);
@@ -184,51 +184,51 @@ void pressure_temp_calibrate(void) {
 	HAL_Delay(100);
 
 	buf[0] = 0xA0; //PROM read command c0
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to read PROM data");
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 2, 1000);
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 2, 1000);
 	i2c_check(ret, "receiving PROM data - c1");
 	prom.c0 =  ((uint16_t)buf[0] << 8)  | buf[1];  //C0
 
 	buf[0] = 0xA2; //PROM read command c1
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to read PROM data");
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 2, 1000);
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 2, 1000);
 	i2c_check(ret, "receiving PROM data - c1");
 	prom.c1 =  ((uint16_t)buf[0] << 8)  | buf[1];  //C1
 
 	buf[0] = 0xA4; //PROM read command c2
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to read PROM data");
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 2, 1000);
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 2, 1000);
 	i2c_check(ret, "receiving PROM data - c2");
 	prom.c2 =   ((uint16_t)buf[0] << 8)  | buf[1];  //C2
 
 	buf[0] = 0xA6; //PROM read command c3
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to read PROM data");
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 2, 1000);
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 2, 1000);
 	i2c_check(ret, "receiving PROM data - c3");
 	prom.c3 =      ((uint16_t)buf[0] << 8)  | buf[1];  //C3
 
 	buf[0] = 0xA8; //PROM read command c4
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to read PROM data");
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 2, 1000);
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 2, 1000);
 	i2c_check(ret, "receiving PROM data - c4");
 	prom.c4 =      ((uint16_t)buf[0] << 8)  | buf[1];  //C4
 
 	buf[0] = 0xAA; //PROM read command c5
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to read PROM data");
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 2, 1000);
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 2, 1000);
 	i2c_check(ret, "receiving PROM data - c5");
 	prom.c5 =    ((uint16_t)buf[0] << 8) | buf[1]; //C5
 
 	buf[0] = 0xAC; //PROM read command c6
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to read PROM data");
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 2, 1000);
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 2, 1000);
 	i2c_check(ret, "receiving PROM data - c6");
 	prom.c6 = ((uint16_t)buf[0] << 8) | buf[1]; //C6
 
@@ -250,31 +250,31 @@ void get_pressure_temp( PRES_TEMP *pres_temp ) {
 	//read digital pressure raw data (D1)  ------------------------
 	clear_buf(buf);
 	buf[0] = 0x48; // initiate pressure conversion command = 01001000
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "init D1 reading");
-	HAL_Delay(100);
+	//HAL_Delay(100);
 
 
 	buf[0] = 0x0; // ADC read sequence command = 00000000
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to receive D1 data");
 
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 3, 1000); //read
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 3, 1000); //read
 	i2c_check(ret,"receiving D1 data");
 	//print_buf(buf);
 	uint32_t D1 = ((uint32_t)buf[0] << 16) | ((uint32_t)buf[1] << 8) | (uint32_t)buf[2];
 
 	//read digital temperature raw data (D2) -----------------------
 	buf[0] = 0x58; // initiate temperature conversion command = 01011000
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "init D2 reading");
-	HAL_Delay(100);
+	//HAL_Delay(100);
 
 	buf[0] = 0x0; // ADC read sequence command = 00000000
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to receive D2 data");
 
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 3, 1000); //read
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 3, 1000); //read
 	i2c_check(ret, "receiving D2 data");
 	uint32_t D2 = ((uint32_t)buf[0] << 16) | ((uint32_t)buf[1] << 8) | buf[2];
 	//print_buf(buf);
@@ -304,31 +304,31 @@ uint32_t get_pressure_temp_CAN( PRES_TEMP *pres_temp ) {
 	//read digital pressure raw data (D1)  ------------------------
 	clear_buf(buf);
 	buf[0] = 0x48; // initiate pressure conversion command = 01001000
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "init D1 reading");
-	HAL_Delay(100);
+	//HAL_Delay(100);
 
 
 	buf[0] = 0x0; // ADC read sequence command = 00000000
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to receive D1 data");
 
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 3, 1000); //read
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 3, 1000); //read
 	i2c_check(ret,"receiving D1 data");
 	//print_buf(buf);
 	uint32_t D1 = ((uint32_t)buf[0] << 16) | ((uint32_t)buf[1] << 8) | (uint32_t)buf[2];
 
 	//read digital temperature raw data (D2) -----------------------
 	buf[0] = 0x58; // initiate temperature conversion command = 01011000
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "init D2 reading");
-	HAL_Delay(100);
+	//HAL_Delay(100);
 
 	buf[0] = 0x0; // ADC read sequence command = 00000000
-	ret = HAL_I2C_Master_Transmit(&hi2c3, PRESSURE_ADDR, buf, 1, 1000 );
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "command to receive D2 data");
 
-	ret = HAL_I2C_Master_Receive(&hi2c3, PRESSURE_ADDR, buf, 3, 1000); //read
+	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 3, 1000); //read
 	i2c_check(ret, "receiving D2 data");
 	uint32_t D2 = ((uint32_t)buf[0] << 16) | ((uint32_t)buf[1] << 8) | buf[2];
 	//print_buf(buf);

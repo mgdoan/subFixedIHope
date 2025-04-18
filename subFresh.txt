@@ -1,0 +1,108 @@
+Configuration	subFresh
+STM32CubeMX 	6.14.1
+Date	04/18/2025
+MCU	STM32L432KCUx
+
+
+
+PERIPHERALS	MODES	FUNCTIONS	PINS
+CAN1	Activated	CAN1_RX	PA11
+CAN1	Activated	CAN1_TX	PA12
+I2C1	I2C	I2C1_SCL	PB6
+I2C1	I2C	I2C1_SDA	PB7
+I2C3	I2C	I2C3_SCL	PA7
+I2C3	I2C	I2C3_SDA	PB4 (NJTRST)
+LPUART1	Asynchronous	LPUART1_RX	PA3
+LPUART1	Asynchronous	LPUART1_TX	PA2
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+TIM1	Internal Clock	TIM1_VS_ClockSourceINT	VP_TIM1_VS_ClockSourceINT
+TIM1	PWM Generation CH3	TIM1_CH3	PA10
+TIM2	Internal Clock	TIM2_VS_ClockSourceINT	VP_TIM2_VS_ClockSourceINT
+TIM2	PWM Generation CH2	TIM2_CH2	PA1
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+2	PC14-OSC32_IN (PC14)*	RCC_OSC32_IN	
+3	PC15-OSC32_OUT (PC15)*	RCC_OSC32_OUT	
+6	PA0*	RCC_CK_IN	MCO [High speed clock in]
+7	PA1	TIM2_CH2	
+8	PA2	LPUART1_TX	
+9	PA3	LPUART1_RX	
+13	PA7	I2C3_SCL	
+18	PA8	GPIO_Output	
+19	PA9	GPIO_Output	
+20	PA10	TIM1_CH3	
+21	PA11	CAN1_RX	
+22	PA12	CAN1_TX	
+23	PA13 (JTMS-SWDIO)*	SYS_JTMS-SWDIO	SWDIO
+24	PA14 (JTCK-SWCLK)*	SYS_JTCK-SWCLK	SWCLK
+25	PA15 (JTDI)*	USART2_RX	VCP_RX
+26	PB3 (JTDO-TRACESWO)	GPIO_Output	LD3 [Green]
+27	PB4 (NJTRST)	I2C3_SDA	
+29	PB6	I2C1_SCL	
+30	PB7	I2C1_SDA	
+PERIPHERALS	MODES	FUNCTIONS	PINS
+CAN1	Activated	CAN1_RX	PA11
+CAN1	Activated	CAN1_TX	PA12
+I2C1	I2C	I2C1_SCL	PB6
+I2C1	I2C	I2C1_SDA	PB7
+I2C3	I2C	I2C3_SCL	PA7
+I2C3	I2C	I2C3_SDA	PB4 (NJTRST)
+LPUART1	Asynchronous	LPUART1_RX	PA3
+LPUART1	Asynchronous	LPUART1_TX	PA2
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+TIM1	Internal Clock	TIM1_VS_ClockSourceINT	VP_TIM1_VS_ClockSourceINT
+TIM1	PWM Generation CH3	TIM1_CH3	PA10
+TIM2	Internal Clock	TIM2_VS_ClockSourceINT	VP_TIM2_VS_ClockSourceINT
+TIM2	PWM Generation CH2	TIM2_CH2	PA1
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+2	PC14-OSC32_IN (PC14)*	RCC_OSC32_IN	
+3	PC15-OSC32_OUT (PC15)*	RCC_OSC32_OUT	
+6	PA0*	RCC_CK_IN	MCO [High speed clock in]
+7	PA1	TIM2_CH2	
+8	PA2	LPUART1_TX	
+9	PA3	LPUART1_RX	
+13	PA7	I2C3_SCL	
+18	PA8	GPIO_Output	
+19	PA9	GPIO_Output	
+20	PA10	TIM1_CH3	
+21	PA11	CAN1_RX	
+22	PA12	CAN1_TX	
+23	PA13 (JTMS-SWDIO)*	SYS_JTMS-SWDIO	SWDIO
+24	PA14 (JTCK-SWCLK)*	SYS_JTCK-SWCLK	SWCLK
+25	PA15 (JTDI)*	USART2_RX	VCP_RX
+26	PB3 (JTDO-TRACESWO)	GPIO_Output	LD3 [Green]
+27	PB4 (NJTRST)	I2C3_SDA	
+29	PB6	I2C1_SCL	
+30	PB7	I2C1_SDA	
+
+
+
+SOFTWARE PROJECT
+
+Project Settings : 
+Project Name : subFresh
+Project Folder : N:\sub_418\subFresh
+Toolchain / IDE : STM32CubeIDE
+Firmware Package Name and Version : STM32Cube FW_L4 V1.18.1
+
+
+Code Generation Settings : 
+STM32Cube MCU packages and embedded software packs : Copy only the necessary library files
+Generate peripheral initialization as a pair of '.c/.h' files per peripheral : No
+Backup previously generated files when re-generating : No
+Delete previously generated files when not re-generated : Yes
+Set all free pins as analog (to optimize the power consumption) : No
+
+
+Toolchains Settings : 
+Compiler Optimizations : 
+
+
+
+
+

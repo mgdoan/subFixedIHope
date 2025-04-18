@@ -88,7 +88,7 @@ uint8_t read_control_from_CAN(){
 		  control = RxData[0];
 		  datacheck = 0;
 	  }
-	  printf("controller command is  = %d\r\n", control);
+	  //printf("controller command is  = %d\r\n", control);
 	  return control;
 }
 
@@ -175,4 +175,20 @@ void controlThrusterSpeedCAN(uint8_t controllerCommand) {
 	else if(((controllerCommand >> 4) & 0b1) && !((controllerCommand >> 5) & 0b1)){
 		pwm_val_increase();
 	}
+}
+
+
+void controlLinearActuatorCAN(uint8_t controllerCommand) {
+	// decrease speed
+		if((controllerCommand >> 7) & 0b1 && !((controllerCommand >> 6) & 0b1)){//up
+			printf("syringe up\r\n");
+			goUp();
+		 }
+		 if(!((controllerCommand >> 7) & 0b1) && (controllerCommand >> 6) & 0b1){//down
+			 printf("syringe down\r\n");
+			 goDown();
+		 }
+		 if(!((controllerCommand >> 7) & 0b1) && !((controllerCommand >> 6)) & 0b1){//down
+			 stop();
+		 }
 }
