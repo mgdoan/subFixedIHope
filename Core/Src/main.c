@@ -57,6 +57,7 @@ TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN PV */
 PRES_TEMP pres_temp;
+uint16_t pulseCount = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -85,9 +86,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
      	//printf("temperature: %f\r\n", pres_temp.temperature); //in degrees celcius
     	uint16_t gyroReading = gyroGetReading();
     	uint32_t presTempReading = 0;
-    	uint16_t flowReading = 0;
     	//presTempReading = get_pressure_temp_CAN(&pres_temp); // uncomment when working
-    	transmit_sensor_packet(gyroReading, presTempReading, flowReading);
+    	transmit_sensor_packet(gyroReading, presTempReading, pulseCount);
     }
 }
 
@@ -160,6 +160,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uint8_t control =0;
+
   while (1)
   {
     /* USER CODE END WHILE */
