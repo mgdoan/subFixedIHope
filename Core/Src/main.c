@@ -89,6 +89,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     	uint32_t presTempReading = 0;
     	//presTempReading = get_pressure_temp_CAN(&pres_temp); // uncomment when working
     	transmit_sensor_packet(gyroReading, presTempReading, pulseCount);
+    	pulseCount = 0;
     }
 }
 
