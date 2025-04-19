@@ -8,7 +8,7 @@
 #ifndef SRC_FLOWMETER_H_
 #define SRC_FLOWMETER_H_
 
-extern uint16_t pulseCount = 0;
+extern uint16_t pulseCount;
 
 //interrupt to count pulses
 void HAL_GPIO_EXTI_Callback(uint16_t pin) {

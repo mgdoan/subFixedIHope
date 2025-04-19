@@ -98,8 +98,8 @@ void transmit_sensor_packet(uint16_t gyroReading, uint32_t presTempReading, uint
 	gyroMSB = (gyroReading >> 8) & 0xFF;
 	gyroLSB = gyroReading & 0xFF;
 
-	printf("gyro MSB is  = %d\r\n", gyroMSB);
-	printf("gyro LSB is  = %d\r\n", gyroLSB);
+	printf("gyro reading is  = %d\r\n", gyroReading);
+	printf("pulse reading is  = %d\r\n", flowReading);
 
 	TxData[0] = gyroMSB;
 	TxData[1] = gyroLSB;
