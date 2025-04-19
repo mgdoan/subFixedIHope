@@ -252,7 +252,7 @@ void get_pressure_temp( PRES_TEMP *pres_temp ) {
 	buf[0] = 0x48; // initiate pressure conversion command = 01001000
 	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "init D1 reading");
-	//HAL_Delay(100);
+	HAL_Delay(100);
 
 
 	buf[0] = 0x0; // ADC read sequence command = 00000000
@@ -268,7 +268,7 @@ void get_pressure_temp( PRES_TEMP *pres_temp ) {
 	buf[0] = 0x58; // initiate temperature conversion command = 01011000
 	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "init D2 reading");
-	//HAL_Delay(100);
+	HAL_Delay(100);
 
 	buf[0] = 0x0; // ADC read sequence command = 00000000
 	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
@@ -295,8 +295,7 @@ void get_pressure_temp( PRES_TEMP *pres_temp ) {
 
 }
 
-uint32_t get_pressure_temp_CAN( PRES_TEMP *pres_temp ) {
-
+void init_pressure_reading(){
 	HAL_StatusTypeDef ret;
 	uint8_t buf[3];
 	clear_buf(buf);
@@ -306,8 +305,22 @@ uint32_t get_pressure_temp_CAN( PRES_TEMP *pres_temp ) {
 	buf[0] = 0x48; // initiate pressure conversion command = 01001000
 	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
 	i2c_check(ret, "init D1 reading");
-	//HAL_Delay(100);
+}
 
+void init_temp_reading(){
+	HAL_StatusTypeDef ret;
+	uint8_t buf[3];
+	clear_buf(buf);
+
+	//read digital temperature raw data (D2) -----------------------
+	buf[0] = 0x58; // initiate temperature conversion command = 01011000
+	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
+	i2c_check(ret, "init D2 reading");
+}
+
+uint32_t read_pressure(){
+	HAL_StatusTypeDef ret;
+	uint8_t buf[3];
 
 	buf[0] = 0x0; // ADC read sequence command = 00000000
 	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
@@ -315,14 +328,13 @@ uint32_t get_pressure_temp_CAN( PRES_TEMP *pres_temp ) {
 
 	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 3, 1000); //read
 	i2c_check(ret,"receiving D1 data");
-	//print_buf(buf);
 	uint32_t D1 = ((uint32_t)buf[0] << 16) | ((uint32_t)buf[1] << 8) | (uint32_t)buf[2];
+	return D1;
+}
 
-	//read digital temperature raw data (D2) -----------------------
-	buf[0] = 0x58; // initiate temperature conversion command = 01011000
-	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
-	i2c_check(ret, "init D2 reading");
-	//HAL_Delay(100);
+uint32_t read_temp(){
+	HAL_StatusTypeDef ret;
+	uint8_t buf[3];
 
 	buf[0] = 0x0; // ADC read sequence command = 00000000
 	ret = HAL_I2C_Master_Transmit(&hi2c1, PRESSURE_ADDR, buf, 1, 1000 );
@@ -331,8 +343,11 @@ uint32_t get_pressure_temp_CAN( PRES_TEMP *pres_temp ) {
 	ret = HAL_I2C_Master_Receive(&hi2c1, PRESSURE_ADDR, buf, 3, 1000); //read
 	i2c_check(ret, "receiving D2 data");
 	uint32_t D2 = ((uint32_t)buf[0] << 16) | ((uint32_t)buf[1] << 8) | buf[2];
-	//print_buf(buf);
+	return D2;
 
+}
+
+uint32_t calculate_temp_pressure(uint32_t D2, uint32_t D1){
 	//Calculate temperature -----------------------------------------
 	int32_t dT = D2 - (prom.c5 * 256); //difference between actual and reference temperature
 	int32_t TEMP = 2000 + ((int64_t)dT*prom.c6) / 8388608; //actual temperature in Celcius
@@ -343,10 +358,13 @@ uint32_t get_pressure_temp_CAN( PRES_TEMP *pres_temp ) {
 
 	float temp = TEMP / 100.0f;
 	float pressure = (((D1*SENS) / 2097152 - OFF) / 8192) / 10.0f; //final temperature compensated pressure
+//	printf("pressure: %f\r\n", pressure); //in units of millibar (mbar)
+//	printf("temperature: %f\r\n", temp); //in degrees celcius
 
-	uint16_t lsb = temp;
-	uint16_t msb = pressure;
+	uint16_t lsb = (uint16_t)temp;
+	uint16_t msb = (uint16_t)pressure;
+//	printf("pressure (int) : %u\r\n", msb); //in units of millibar (mbar)
+//	printf("temperature (int) : %u\r\n", lsb); //in degrees celcius
 	uint32_t presTemp = (msb << 16) | lsb;
 	return presTemp;
-
 }

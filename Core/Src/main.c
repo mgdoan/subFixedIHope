@@ -59,6 +59,10 @@ TIM_HandleTypeDef htim6;
 /* USER CODE BEGIN PV */
 PRES_TEMP pres_temp;
 uint16_t pulseCount = 0;
+uint8_t readCode = 0; // 0 = reading temp, 1 = reading pressure
+uint32_t D1 = 0; // D1 = pressure raw data
+uint32_t D2 = 0; // D2 = temp raw data
+uint32_t presTempReading = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -80,14 +84,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim->Instance == TIM6)
     {
-        // Your periodic code here
-    	//gyro_test();
-    	//get_pressure_temp(&pres_temp);
-    	//printf("pressure: %f\r\n", pres_temp.pressure); //in units of millibar (mbar)
-     	//printf("temperature: %f\r\n", pres_temp.temperature); //in degrees celcius
+    	if(readCode){
+    		D1 = read_pressure();
+    		init_temp_reading();
+    		readCode = 0;
+    	}
+    	else{
+    		D2 = read_temp();
+    		init_pressure_reading();
+    		readCode = 1;
+    	}
+    	presTempReading = calculate_temp_pressure(D2,D1);
     	uint16_t gyroReading = gyroGetReading();
-    	uint32_t presTempReading = 0;
-    	//presTempReading = get_pressure_temp_CAN(&pres_temp); // uncomment when working
     	transmit_sensor_packet(gyroReading, presTempReading, pulseCount);
     	pulseCount = 0;
     }

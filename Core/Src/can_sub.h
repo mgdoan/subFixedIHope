@@ -109,6 +109,9 @@ void transmit_sensor_packet(uint16_t gyroReading, uint32_t presTempReading, uint
 	pres = (presTempReading >> 16) & 0xFFFF;
 	temp = presTempReading & 0xFFFF;
 
+	printf("pressure reading is  = %d\r\n", pres);
+	printf("temp reading is  = %d\r\n", temp);
+
 	uint8_t presLSB, presMSB, tempLSB, tempMSB;
 	presMSB = (pres >> 8) & 0xFF;
 	presLSB = pres & 0xFF;
