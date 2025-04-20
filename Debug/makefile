@@ -60,8 +60,8 @@ all: main-build
 main-build: subFresh.elf secondary-outputs
 
 # Tool invocations
-subFresh.elf subFresh.map: $(OBJS) $(USER_OBJS) N:\EECS373_mgdoan\subFresh\STM32L432KCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "subFresh.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"N:\EECS373_mgdoan\subFresh\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="subFresh.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+subFresh.elf subFresh.map: $(OBJS) $(USER_OBJS) /Users/colin/Desktop/WN2025/373/substuff/subFresh/STM32L432KCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "subFresh.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/colin/Desktop/WN2025/373/substuff/subFresh/STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="subFresh.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

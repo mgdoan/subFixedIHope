@@ -171,6 +171,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   uint8_t control =0;
 
+  set_thruster(0); //boot sequence
+  set_thruster(1);
+  HAL_Delay(1000);
+  stop_thruster(0);
+  stop_thruster(1);
+  HAL_Delay(1000);
+  goUp();
+  HAL_Delay(1000);
+  goDown();
+  HAL_Delay(1000);
+
+
+
   while (1)
   {
     /* USER CODE END WHILE */
