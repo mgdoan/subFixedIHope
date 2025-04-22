@@ -183,7 +183,8 @@ int main(void)
   HAL_Delay(1000);
 
 
-
+  stop_thruster(0);
+  stop_thruster(1);
   while (1)
   {
     /* USER CODE END WHILE */

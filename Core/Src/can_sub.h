@@ -30,8 +30,8 @@ int datacheck;
 
 uint8_t sensorPacket[8];
 
-uint8_t prevDEC = 0;
-uint8_t prevINC = 0;
+uint8_t prevDec = 0;
+uint8_t prevInc = 0;
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
