@@ -30,6 +30,9 @@ int datacheck;
 
 uint8_t sensorPacket[8];
 
+uint8_t prevDEC = 0;
+uint8_t prevINC = 0;
+
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -170,14 +173,22 @@ void controlThrusterStateCAN(uint8_t controllerCommand){
 }
 
 void controlThrusterSpeedCAN(uint8_t controllerCommand) {
-	// decrease speed
-	if(((controllerCommand >> 5) & 0b1) && !((controllerCommand >> 4) & 0b1)){
-		pwm_val_decrease();
-	}
-	// increase speed
-	else if(((controllerCommand >> 4) & 0b1) && !((controllerCommand >> 5) & 0b1)){
-		pwm_val_increase();
-	}
+    // decode current raw bits
+    uint8_t inc = (controllerCommand >> 4) & 0x1;
+    uint8_t dec = (controllerCommand >> 5) & 0x1;
+
+    // on rising edge of INCREASE (but not hold both buttons)
+    if (inc && !prevInc && !dec) {
+        pwm_val_increase();
+    }
+    // on rising edge of DECREASE
+    else if (dec && !prevDec && !inc) {
+        pwm_val_decrease();
+    }
+
+    // update "previous" for next call
+    prevInc = inc;
+    prevDec = dec;
 }
 
 
